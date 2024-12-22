@@ -21,7 +21,7 @@ class LoginScreen extends StatelessWidget {
                 height: size.height * 0.2,
                 width: size.width * 0.5,
                 decoration: BoxDecoration(
-                  image: DecorationImage(
+                  image: const DecorationImage(
                     image: AssetImage('assets/images/logo.png'),
                     fit: BoxFit.contain,
                   ),
@@ -29,7 +29,7 @@ class LoginScreen extends StatelessWidget {
               ),
               SizedBox(height: 20),
               // Judul
-              Text(
+              const Text(
                 'Selamat Datang!',
                 style: TextStyle(
                   fontSize: 28,
@@ -49,7 +49,7 @@ class LoginScreen extends StatelessWidget {
                 keyboardType: TextInputType.emailAddress,
                 decoration: InputDecoration(
                   labelText: 'Email',
-                  prefixIcon: Icon(Icons.email_outlined),
+                  prefixIcon: const Icon(Icons.email_outlined),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10),
                   ),
@@ -62,23 +62,9 @@ class LoginScreen extends StatelessWidget {
                 obscureText: true,
                 decoration: InputDecoration(
                   labelText: 'Password',
-                  prefixIcon: Icon(Icons.lock_outline),
+                  prefixIcon: const Icon(Icons.lock_outline),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
-              ),
-              SizedBox(height: 10),
-              // Lupa Password
-              Align(
-                alignment: Alignment.centerRight,
-                child: TextButton(
-                  onPressed: () {
-                    // TODO: Add forgot password functionality
-                  },
-                  child: Text(
-                    'Forgot Password?',
-                    style: TextStyle(color: Colors.deepPurple),
                   ),
                 ),
               ),
@@ -88,16 +74,35 @@ class LoginScreen extends StatelessWidget {
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: () {
-                    // TODO: Add login functionality
+                    // Logika login
+                    String email = emailController.text.trim();
+                    String password = passwordController.text.trim();
+
+                    if (email == 'admin' && password == 'admin') {
+                      // Jika email dan password adalah admin
+                      Navigator.pushNamed(context, '/adminHome');
+                    } else if (email.isNotEmpty && password.isNotEmpty) {
+                      // Jika login berhasil untuk user biasa
+                      Navigator.pushNamed(context, '/homeScreen');
+                    } else {
+                      // Jika login gagal
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: const Text(
+                              'Email atau password tidak boleh kosong'),
+                          backgroundColor: Colors.red,
+                        ),
+                      );
+                    }
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.deepPurple,
-                    padding: EdgeInsets.symmetric(vertical: 15),
+                    backgroundColor: const Color(0xFF4681F4),
+                    padding: const EdgeInsets.symmetric(vertical: 15),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
                     ),
                   ),
-                  child: Text(
+                  child: const Text(
                     'Login',
                     style: TextStyle(fontSize: 16, color: Colors.white),
                   ),
@@ -114,7 +119,7 @@ class LoginScreen extends StatelessWidget {
                     onTap: () {
                       Navigator.pushNamed(context, '/register');
                     },
-                    child: Text(
+                    child: const Text(
                       'Register',
                       style: TextStyle(
                         color: Colors.deepPurple,
@@ -124,7 +129,6 @@ class LoginScreen extends StatelessWidget {
                   ),
                 ],
               ),
-              SizedBox(height: size.height * 0.1), // Spasi bawah
             ],
           ),
         ),

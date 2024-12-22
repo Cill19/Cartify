@@ -24,7 +24,7 @@ class RegisterScreen extends StatelessWidget {
                 width: size.width * 0.5,
                 decoration: BoxDecoration(
                   image: DecorationImage(
-                    image: AssetImage('assets\images\register.jpg'),
+                    image: AssetImage('assets/images/register1.png'),
                     fit: BoxFit.contain,
                   ),
                 ),
@@ -89,10 +89,10 @@ class RegisterScreen extends StatelessWidget {
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: () {
-                    // TODO: Add register functionality
+                    Navigator.pushNamed(context, '/login');
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.deepPurple,
+                    backgroundColor: Color(0xFF4681F4),
                     padding: EdgeInsets.symmetric(vertical: 15),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),

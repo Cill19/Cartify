@@ -1,5 +1,7 @@
+import 'package:cartify/screens/admin/admin_home_screen.dart';
 import 'package:cartify/screens/login_screen.dart';
 import 'package:cartify/screens/register_screen.dart';
+import 'package:cartify/screens/user/home_screen';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
@@ -32,6 +34,8 @@ class MyApp extends StatelessWidget {
         '/login': (context) => LoginScreen(),
         '/register': (context) => RegisterScreen(),
         '/home': (context) => const MyHomePage(title: 'Cartify Home'),
+        '/homeScreen': (context) => const HomeScreen(),
+        '/adminHome': (context) => const AdminHomeScreen()
       },
     );
   }
