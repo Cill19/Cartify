@@ -5,27 +5,57 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+
     return Scaffold(
-     appBar: AppBar(
-  title: const Text(
-    'Cartify',
-    style: TextStyle(
-      fontWeight: FontWeight.bold, // Bold
-      color: Colors.red, // Warna merah
-    ),
-  ),
-  centerTitle: true,
-),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: const [
-            Text(
-              'Welcome to Home Screen',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            ),
-            SizedBox(height: 20),
-          ],
+      appBar: AppBar(
+        title: const Text(
+          'Cartify',
+          style: TextStyle(
+            fontWeight: FontWeight.bold, // Bold
+            color: Colors.red, // Warna merah
+          ),
+        ),
+        centerTitle: true,
+      ),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Gambar Header
+              Container(
+                height: size.height * 0.3,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  image: const DecorationImage(
+                    image: AssetImage('assets/images/banner.jpg'),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 20),
+
+              // Selamat Datang
+              const Text(
+                'Welcome to Cartify!',
+                style: TextStyle(
+                  fontSize: 28,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.deepPurple,
+                ),
+              ),
+              const SizedBox(height: 10),
+              const Text(
+                'Discover the best deals on your favorite cars. Start exploring now!',
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Colors.grey,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
