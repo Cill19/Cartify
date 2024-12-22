@@ -39,7 +39,7 @@ class HomeScreen extends StatelessWidget {
 
               // Selamat Datang
               const Text(
-                'Welcome to Cartify!',
+                'Selamat Datang di Cartify!',
                 style: TextStyle(
                   fontSize: 28,
                   fontWeight: FontWeight.bold,
@@ -48,11 +48,80 @@ class HomeScreen extends StatelessWidget {
               ),
               const SizedBox(height: 10),
               const Text(
-                'Discover the best deals on your favorite cars. Start exploring now!',
+                'Cari Mobil Yang Anda Cari Dengan Mudah Di Sini!',
                 style: TextStyle(
                   fontSize: 16,
                   color: Colors.grey,
                 ),
+              ),
+              const SizedBox(height: 20),
+
+              // List Slider Horizontal
+              const Text(
+                'Rekomendasi Mobil Untuk Anda',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 10),
+              SizedBox(
+                height: 200, // Tinggi untuk slider horizontal
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: 5, // Ganti dengan jumlah produk dari database
+                  itemBuilder: (context, index) {
+                    return Card(
+                      margin: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: Container(
+                        width: 150, // Lebar untuk setiap card
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(Icons.car_rental, size: 50), // Ganti dengan gambar produk
+                            const SizedBox(height: 10),
+                            Text('Product ${index + 1}'),
+                            Text('Description of product ${index + 1}'),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
+              const SizedBox(height: 20),
+
+              // List Card Vertikal dalam Grid
+              const Text(
+                'Model Terbaru',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 10),
+              GridView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  childAspectRatio: 0.75,
+                ),
+                itemCount: 4, // Ganti dengan jumlah model terbaru
+                itemBuilder: (context, index) {
+                  return Card(
+                    margin: const EdgeInsets.all(8.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(Icons.car_repair, size: 50), // Ganti dengan gambar model
+                        const SizedBox(height: 10),
+                        Text('Model ${index + 1}'),
+                        Text('Description of model ${index + 1}'),
+                      ],
+                    ),
+                  );
+                },
               ),
             ],
           ),
