@@ -1,8 +1,46 @@
 import 'package:flutter/material.dart';
+import 'package:cartify/auth/auth_service.dart'; // Import AuthService
 
 class LoginScreen extends StatelessWidget {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+  final AuthService _authService = AuthService(); // Instance AuthService
+
+  Future<void> _login(BuildContext context) async {
+    final email = emailController.text.trim();
+    final password = passwordController.text.trim();
+
+    if (email.isEmpty || password.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Email dan password tidak boleh kosong'),
+          backgroundColor: Colors.red,
+        ),
+      );
+      return;
+    }
+
+    try {
+      // Logika Login dengan AuthService
+      final user = await _authService.loginUser(email, password);
+
+      if (email == 'admin@gmail.com') {
+        // Jika email adalah admin
+        Navigator.pushNamed(context, '/adminHome');
+      } else {
+        // Jika login berhasil untuk user biasa
+        Navigator.pushNamed(context, '/homeScreen');
+      }
+    } catch (e) {
+      // Jika login gagal
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(e.toString()),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -73,28 +111,7 @@ class LoginScreen extends StatelessWidget {
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
-                  onPressed: () {
-                    // Logika login
-                    String email = emailController.text.trim();
-                    String password = passwordController.text.trim();
-
-                    if (email == 'admin' && password == 'admin') {
-                      // Jika email dan password adalah admin
-                      Navigator.pushNamed(context, '/adminHome');
-                    } else if (email.isNotEmpty && password.isNotEmpty) {
-                      // Jika login berhasil untuk user biasa
-                      Navigator.pushNamed(context, '/homeScreen');
-                    } else {
-                      // Jika login gagal
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: const Text(
-                              'Email atau password tidak boleh kosong'),
-                          backgroundColor: Colors.red,
-                        ),
-                      );
-                    }
-                  },
+                  onPressed: () => _login(context), // Panggil fungsi login
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF4681F4),
                     padding: const EdgeInsets.symmetric(vertical: 15),
