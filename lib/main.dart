@@ -35,7 +35,7 @@ class MyApp extends StatelessWidget {
         '/register': (context) => RegisterScreen(),
         '/home': (context) => const MyHomePage(title: 'Cartify Home'),
         '/homeScreen': (context) => const HomeScreen(),
-        '/adminHome': (context) => const AdminHomeScreen(),
+        '/adminHome': (context) => AdminHomeScreen(),
       },
     );
   }
