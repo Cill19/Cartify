@@ -1,24 +1,21 @@
-import 'package:cartify/screens/user/product_detail_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart'; // Pastikan file ini ada dalam folder yang sama atau sesuaikan path-nya
+import 'package:flutter/material.dart';
+import 'product_detail_screen.dart';
 
 class ProductScreen extends StatelessWidget {
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  const ProductScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: StreamBuilder(
-        stream: _firestore.collection('product').snapshots(),
+        stream: FirebaseFirestore.instance.collection('product').snapshots(),
         builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
           }
-          if (snapshot.hasError) {
-            return Center(child: Text('Error: ${snapshot.error}'));
-          }
           if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-            return const Center(child: Text('No products found'));
+            return const Center(child: Text('No products found.'));
           }
 
           final products = snapshot.data!.docs;
@@ -35,22 +32,18 @@ class ProductScreen extends StatelessWidget {
               itemCount: products.length,
               itemBuilder: (context, index) {
                 final product = products[index];
-                final String name = product['name'] ?? 'Unknown';
-                final String price = product['price']?.toString() ?? '0';
-                final String imageurl = product['imageurl'] ?? '';
-                final String description =
-                    product['description'] ?? 'No description';
-
                 return GestureDetector(
                   onTap: () {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) => ProductDetailScreen(
-                          name: name,
-                          price: price,
-                          imageurl: imageurl,
-                          description: description,
+                          id: product.id,
+                          name: product['name'] ?? 'Unknown',
+                          price: product['price']?.toString() ?? '0',
+                          imageurl: product['imageurl'] ?? '',
+                          description:
+                              product['description'] ?? 'No description',
                         ),
                       ),
                     );
@@ -63,43 +56,34 @@ class ProductScreen extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        // Gambar produk
                         Expanded(
                           child: ClipRRect(
                             borderRadius: const BorderRadius.vertical(
                               top: Radius.circular(12),
                             ),
-                            child: imageurl.isNotEmpty
+                            child: product['imageurl'] != null
                                 ? Image.network(
-                                    imageurl,
+                                    product['imageurl'],
                                     fit: BoxFit.cover,
                                     width: double.infinity,
                                     errorBuilder: (context, error, stackTrace) {
                                       return Container(
                                         color: Colors.grey[200],
-                                        child: const Icon(
-                                          Icons.broken_image,
-                                          color: Colors.grey,
-                                          size: 40,
-                                        ),
+                                        child: const Icon(Icons.broken_image,
+                                            size: 50),
                                       );
                                     },
                                   )
                                 : Container(
                                     color: Colors.grey[200],
-                                    child: const Icon(
-                                      Icons.image,
-                                      color: Colors.grey,
-                                      size: 40,
-                                    ),
+                                    child: const Icon(Icons.image, size: 50),
                                   ),
                           ),
                         ),
-                        // Nama produk
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Text(
-                            name,
+                            product['name'] ?? 'Unknown',
                             style: const TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
@@ -108,15 +92,12 @@ class ProductScreen extends StatelessWidget {
                             overflow: TextOverflow.ellipsis,
                           ),
                         ),
-                        // Harga produk
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 8.0),
                           child: Text(
-                            'Rp $price',
+                            'Rp ${product['price']?.toString() ?? '0'}',
                             style: const TextStyle(
-                              fontSize: 14,
-                              color: Colors.deepPurple,
-                            ),
+                                fontSize: 14, color: Colors.deepPurple),
                           ),
                         ),
                       ],

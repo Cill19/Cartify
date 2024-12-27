@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
-import 'cart_screen.dart'; // Import halaman CartScreen
+import 'package:provider/provider.dart';
+import '../../providers/cart_provider.dart';
 
 class ProductDetailScreen extends StatelessWidget {
+  final String id;
   final String name;
   final String price;
   final String imageurl;
@@ -9,6 +11,7 @@ class ProductDetailScreen extends StatelessWidget {
 
   const ProductDetailScreen({
     Key? key,
+    required this.id,
     required this.name,
     required this.price,
     required this.imageurl,
@@ -26,7 +29,6 @@ class ProductDetailScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Gambar produk
             imageurl.isNotEmpty
                 ? Image.network(
                     imageurl,
@@ -34,71 +36,44 @@ class ProductDetailScreen extends StatelessWidget {
                     width: double.infinity,
                     height: 300,
                     errorBuilder: (context, error, stackTrace) {
-                      return Container(
-                        color: Colors.grey[200],
-                        child: const Icon(
-                          Icons.broken_image,
-                          size: 80,
-                          color: Colors.grey,
-                        ),
-                      );
+                      return const Icon(Icons.broken_image, size: 80);
                     },
                   )
-                : Container(
-                    color: Colors.grey[200],
-                    height: 300,
-                    child: const Icon(
-                      Icons.image,
-                      size: 80,
-                      color: Colors.grey,
-                    ),
-                  ),
+                : const Icon(Icons.image, size: 80),
             const SizedBox(height: 16),
-            // Nama produk
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Text(
                 name,
-                style: const TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                ),
+                style:
+                    const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               ),
             ),
-            // Harga produk
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: Text(
                 'Rp $price',
-                style: const TextStyle(
-                  fontSize: 20,
-                  color: Colors.deepPurple,
-                ),
+                style: const TextStyle(fontSize: 20, color: Colors.deepPurple),
               ),
             ),
             const SizedBox(height: 16),
-            // Deskripsi produk
             Padding(
               padding: const EdgeInsets.all(16.0),
-              child: Text(
-                description,
-                style: const TextStyle(fontSize: 16),
-              ),
+              child: Text(description, style: const TextStyle(fontSize: 16)),
             ),
             const SizedBox(height: 16),
-            // Tombol Beli Sekarang
             Center(
               child: ElevatedButton(
                 onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => CartScreen(
-                        name: name,
-                        price: price,
-                        imageurl: imageurl,
-                      ),
-                    ),
+                  Provider.of<CartProvider>(context, listen: false).addItem(
+                    id,
+                    name,
+                    imageurl,
+                    double.parse(
+                        price.replaceAll('.', '')), // Hapus pemisah ribuan
+                  );
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('$name ditambahkan ke keranjang')),
                   );
                 },
                 style: ElevatedButton.styleFrom(
@@ -112,11 +87,8 @@ class ProductDetailScreen extends StatelessWidget {
                   ),
                 ),
                 child: const Text(
-                  'Tambah ke Keranjang',
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: Colors.white,
-                  ),
+                  'Masukkan ke Keranjang',
+                  style: TextStyle(color: Colors.white),
                 ),
               ),
             ),
